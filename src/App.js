@@ -2,16 +2,14 @@ import { useEffect, useState } from 'react';
 import './App.css';
 import Auth from './components/auth';
 import { db } from './config/firebase';
-import { getDocs, collection } from 'firebase/firestore';
-import Add from './components/crud';
+import { getDocs, collection, addDoc, deleteDoc, doc } from 'firebase/firestore';
+
 
 function App() {
 
   const [movies, setMovies] = useState([])
   const moviesRef = collection(db, "movies")
-
-  useEffect(() =>{
-    const getMovies = async () =>{
+ const getMovies = async () =>{
       try {
         const data = await getDocs(moviesRef);
         const filteredData = data.docs.map((doc) =>(
@@ -24,19 +22,59 @@ function App() {
       }
     }
 
+  useEffect(() =>{
+   
     getMovies()
-  }, [])
+  })
  console.log(movies)
+
+ const [newTitle, setNewtitle] =useState("")
+    const [newDate, setNewDate] =useState(0)
+    const [isOscar, setIsoscar] =useState(false)
+
+    const submitMovie = async () => {
+        try {
+            await addDoc(moviesRef,{
+              title : newTitle,
+              realeaseDate: newDate,
+              oscar : isOscar
+            })
+            getMovies()
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const deleteMovie =async (id) =>{
+      const movieDoc =  doc(db, "movies", id)
+      await deleteDoc(movieDoc);
+    }
   return (
     <div className="App">
       <Auth/>
+      <div className="add">
+            <input
+                type="text"
+                placeholder="title"
+                onChange={(e)=> setNewtitle(e.target.value)}
+            />
+            <input
+                type="number"
+                placeholder="date"
+                onChange={(e)=> setNewDate(e.target.value)}
+            />
+            <input type="checkbox"  onChange={(e)=> setIsoscar(e.target.checked)}/>
+            <label htmlFor="Oscar">Oscar</label>
+            <button onClick={submitMovie}>Submit</button>
+        </div>
       {movies && movies.map((movie) =>(
         <div className="movies" key={movie.id}>
           <h2 style={{color: movie.oscar ? "green" : "red"}} >{movie.title}</h2>
           <p>{movie.realeaseDate}</p>
+          <button onClick={() =>deleteMovie(movie.id)}>Delete</button>
         </div>
       ))}
-        <Add/>
+          
     </div>
   );
 }
