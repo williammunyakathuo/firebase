@@ -14,6 +14,7 @@ const Auth = () => {
         }
       
     }
+    
 
     const signInWithGoogle = async () =>{
         try {
@@ -30,8 +31,9 @@ const Auth = () => {
             console.log(error)
         }
     }
-
-   console.log(auth?.currentUser?.email)
+     
+   
+   
     return ( 
         <div className="auth">
             <input type="text" 
