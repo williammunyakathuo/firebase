@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 import Auth from './components/auth';
-import { db } from './config/firebase';
+import { db, auth } from './config/firebase';
 import { getDocs, collection, addDoc, deleteDoc, doc, updateDoc } from 'firebase/firestore';
 
 
@@ -38,7 +38,7 @@ function App() {
         title: newTitle,
         realeaseDate: newDate,
         oscar: isOscar,
-        userId: Auth?.currentUser?.uid
+        userId: auth?.currentUser?.uid
       })
       getMovies()
     } catch (error) {
