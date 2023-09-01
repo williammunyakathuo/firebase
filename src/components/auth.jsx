@@ -1,5 +1,5 @@
-import { auth, googleAuth } from "../config/firebase";
-import {createUserWithEmailAndPassword, signInWithPopup, signOut} from "firebase/auth"
+import { auth, /*googleAuth*/ } from "../config/firebase";
+import {createUserWithEmailAndPassword, /*signInWithPopup*/ signOut} from "firebase/auth"
 import { useState } from "react";
 
 const Auth = () => {
@@ -16,13 +16,13 @@ const Auth = () => {
     }
     
 
-    const signInWithGoogle = async () =>{
-        try {
-            await signInWithPopup(auth, googleAuth)
-        } catch (error) {
-            console.log(error)
-        }
-    }
+    // const signInWithGoogle = async () =>{
+    //     try {
+    //         await signInWithPopup(auth, googleAuth)
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
+    // }
 
     const LogOut = async ()=>{
         try {
@@ -46,7 +46,7 @@ const Auth = () => {
             />
             <button onClick={signIn}>Sign In</button>
 
-            <button onClick={signInWithGoogle}>Sign in with google</button>
+            {/* <button onClick={signInWithGoogle}>Sign in with google</button> */}
 
             <button onClick={LogOut}> LogOut</button>
         </div>
